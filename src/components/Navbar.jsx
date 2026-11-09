@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, Download, ArrowUpRight } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { Link as ScrollLink } from "react-scroll";
 import portfolio from "@/data/portfolio";
 
 const navLinks = [
+  { name: "Home", to: "home" },
   { name: "About", to: "about" },
   { name: "Services", to: "services" },
+  { name: "Skills", to: "skills" },
   { name: "Projects", to: "projects" },
   { name: "Experience", to: "experience" },
   { name: "Contact", to: "contact" },
@@ -18,65 +20,101 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 24);
+      setScrolled(window.scrollY > 30);
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const closeMenu = () => setOpen(false);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="container-custom pt-4">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
+      <nav className="mx-auto max-w-7xl">
         <div
-          className={`rounded-2xl border transition-all duration-300 ${
+          className={`relative rounded-2xl border transition-all duration-500 ${
             scrolled
-              ? "border-white/15 bg-[#07101f]/80 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-              : "border-white/10 bg-white/5 backdrop-blur-lg"
+              ? "border-blue-400/20 bg-[#07111f]/95 shadow-[0_15px_50px_rgba(0,0,0,0.35)] backdrop-blur-2xl"
+              : "border-white/[0.08] bg-[#0b1525]/75 backdrop-blur-xl"
           }`}
         >
-          <div className="flex items-center justify-between px-5 py-4 md:px-6">
-            {/* Logo */}
+          <div className="flex h-[72px] items-center justify-between px-4 md:px-7">
+            {/* BRAND */}
             <Link
               href="/"
-              className="text-xl md:text-2xl font-extrabold tracking-tight"
+              onClick={closeMenu}
+              className="group flex items-center gap-3"
             >
-              <span className="text-white">Yusuf</span>
-              <span className="text-blue-500">.</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/30 bg-blue-500/10">
+                <span className="text-lg font-black text-cyan-300">YO</span>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="text-base font-bold tracking-tight text-white md:text-lg">
+                  Yusuf Odetola
+                </span>
+
+                <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+                  Digital Portfolio
+                </span>
+              </div>
             </Link>
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-8">
+            {/* DESKTOP NAVIGATION */}
+            <div className="hidden items-center gap-6 lg:flex xl:gap-8">
               {navLinks.map((item) => (
                 <ScrollLink
                   key={item.to}
                   to={item.to}
                   smooth
-                  duration={500}
-                  offset={-90}
+                  duration={650}
+                  offset={-100}
                   spy
-                  className="cursor-pointer text-sm font-medium text-slate-300 transition hover:text-white"
-                  activeClass="text-white"
+                  onSetActive={() => setActive(item.to)}
+                  className={`relative cursor-pointer py-2 text-[13px] font-medium transition-colors duration-300 ${
+                    active === item.to
+                      ? "text-cyan-300"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                  activeClass="text-cyan-300"
                 >
                   {item.name}
+
+                  {active === item.to && (
+                    <span className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-300" />
+                  )}
                 </ScrollLink>
               ))}
             </div>
 
-            {/* Desktop Right */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* DESKTOP ACTIONS */}
+            <div className="hidden items-center gap-4 lg:flex">
               <a
                 href={portfolio.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
-                className="text-slate-300 transition hover:text-blue-400"
+                className="text-slate-400 transition hover:-translate-y-0.5 hover:text-cyan-300"
               >
-                <FaGithub size={20} />
+                <FaGithub size={19} />
               </a>
 
               <a
@@ -84,82 +122,110 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
-                className="text-slate-300 transition hover:text-blue-400"
+                className="text-slate-400 transition hover:-translate-y-0.5 hover:text-cyan-300"
               >
-                <FaLinkedin size={20} />
+                <FaLinkedin size={19} />
               </a>
 
-              <a
-                href={portfolio.personal.resume}
-                download
-                className="inline-flex items-center rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
+              {/* VIEW CV */}
+              <Link
+                href="/cv"
+                className="group inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-950/30 transition duration-300 hover:border-cyan-300/50 hover:bg-blue-500"
               >
-                <Download size={16} className="mr-2" />
-                Resume
-              </a>
+                <Download size={15} />
+                View CV
+                <ArrowUpRight
+                  size={14}
+                  className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
             </div>
 
-            {/* Mobile Toggle */}
+            {/* MOBILE MENU BUTTON */}
             <button
+              type="button"
               onClick={() => setOpen((prev) => !prev)}
-              className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
-              aria-label="Toggle menu"
+              aria-label={
+                open ? "Close navigation menu" : "Open navigation menu"
+              }
+              aria-expanded={open}
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white transition hover:border-blue-400/40 hover:bg-blue-500/10 lg:hidden"
             >
               {open ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
 
-          {/* Mobile Menu */}
-          {open && (
-            <div className="border-t border-white/10 px-5 pb-5 pt-4 md:hidden">
-              <div className="flex flex-col gap-4">
-                {navLinks.map((item) => (
-                  <ScrollLink
-                    key={item.to}
-                    to={item.to}
-                    smooth
-                    duration={500}
-                    offset={-90}
-                    onClick={() => setOpen(false)}
-                    className="cursor-pointer text-slate-300 transition hover:text-white"
-                  >
-                    {item.name}
-                  </ScrollLink>
-                ))}
+          {/* MOBILE NAVIGATION */}
+          <div
+            className={`grid overflow-hidden transition-all duration-300 lg:hidden ${
+              open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
+          >
+            <div className="min-h-0">
+              <div className="border-t border-white/[0.08] px-5 pb-5 pt-4">
+                <div className="flex flex-col gap-1">
+                  {navLinks.map((item, index) => (
+                    <ScrollLink
+                      key={item.to}
+                      to={item.to}
+                      smooth
+                      duration={650}
+                      offset={-90}
+                      onClick={() => {
+                        setActive(item.to);
+                        closeMenu();
+                      }}
+                      className={`flex cursor-pointer items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition ${
+                        active === item.to
+                          ? "bg-blue-500/10 text-cyan-300"
+                          : "text-slate-300 hover:bg-white/[0.04] hover:text-white"
+                      }`}
+                    >
+                      <span>{item.name}</span>
 
-                <div className="mt-2 flex items-center gap-4">
-                  <a
-                    href={portfolio.social.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    className="text-slate-300 transition hover:text-blue-400"
-                  >
-                    <FaGithub size={20} />
-                  </a>
-
-                  <a
-                    href={portfolio.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="text-slate-300 transition hover:text-blue-400"
-                  >
-                    <FaLinkedin size={20} />
-                  </a>
+                      <span className="text-xs text-slate-600">
+                        0{index + 1}
+                      </span>
+                    </ScrollLink>
+                  ))}
                 </div>
 
-                <a
-                  href={portfolio.personal.resume}
-                  download
-                  className="mt-2 inline-flex w-fit items-center rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
-                >
-                  <Download size={16} className="mr-2" />
-                  Download CV
-                </a>
+                {/* MOBILE SOCIAL LINKS AND CV */}
+                <div className="mt-5 flex items-center justify-between border-t border-white/[0.08] pt-5">
+                  <div className="flex items-center gap-4">
+                    <a
+                      href={portfolio.social.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="text-slate-400 transition hover:text-cyan-300"
+                    >
+                      <FaGithub size={21} />
+                    </a>
+
+                    <a
+                      href={portfolio.social.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="text-slate-400 transition hover:text-cyan-300"
+                    >
+                      <FaLinkedin size={21} />
+                    </a>
+                  </div>
+
+                  <Link
+                    href="/cv"
+                    onClick={closeMenu}
+                    className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
+                  >
+                    <Download size={15} />
+                    View CV
+                  </Link>
+                </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </nav>
     </header>

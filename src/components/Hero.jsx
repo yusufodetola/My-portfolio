@@ -1,187 +1,420 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  Code2,
+  Palette,
+  Workflow,
+  Languages,
+  Sparkles,
+  ExternalLink,
+} from "lucide-react";
+
+import {
+  SiNextdotjs,
+  SiReact,
+  SiTypescript,
+  SiTailwindcss,
+  SiN8N,
+  SiFigma,
+} from "react-icons/si";
+
 import portfolio from "@/data/portfolio";
 
-export default function Hero() {
+/* =========================================
+   AUTOMATED FLOATING CURSOR + NAME BADGE
+========================================= */
+
+function CursorNameTag() {
   return (
-    <section className="relative overflow-hidden bg-[#070B1A] pt-28">
-      {/* background glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_62%_30%,rgba(0,140,255,0.20),transparent_28%),radial-gradient(circle_at_58%_48%,rgba(0,195,255,0.16),transparent_22%)]" />
+    <>
+      {/* MOBILE CURSOR ANIMATION */}
+      <motion.div
+        className="pointer-events-none absolute left-[12%] top-[15%] z-[40] block md:hidden"
+        animate={{
+          x: [0, 18, 35, 15, -5, 0],
+          y: [0, 12, 25, 8, 18, 0],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatType: "loop",
+        }}
+      >
+        <div className="relative">
+          <svg
+            width="24"
+            height="30"
+            viewBox="0 0 32 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute -left-4 -top-5 z-20 drop-shadow-md"
+          >
+            <path
+              d="M3 2L28 23L16 24L12 36L3 2Z"
+              fill="white"
+              stroke="#111827"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+          </svg>
 
-      {/* grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:72px_72px]" />
+          <div className="rounded-full border border-blue-400/30 bg-blue-600 px-3 py-2 shadow-[0_8px_25px_rgba(37,99,235,0.35)]">
+            <span className="whitespace-nowrap text-[10px] font-semibold tracking-wide text-white">
+              YUSUF ODETOLA
+            </span>
+          </div>
+        </div>
+      </motion.div>
 
-      <div className="container-custom relative z-10">
-        <div className="grid min-h-[100vh] items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          {/* LEFT */}
+      {/* DESKTOP CURSOR ANIMATION */}
+      <motion.div
+        className="pointer-events-none absolute left-[35%] top-[18%] z-[40] hidden md:block"
+        animate={{
+          x: [0, 100, 180, 90, -10, 0],
+          y: [0, 55, 100, 35, 75, 0],
+        }}
+        transition={{
+          duration: 5.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatType: "loop",
+        }}
+      >
+        <div className="relative">
+          <svg
+            width="32"
+            height="40"
+            viewBox="0 0 32 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute -left-6 -top-7 z-20 drop-shadow-md"
+          >
+            <path
+              d="M3 2L28 23L16 24L12 36L3 2Z"
+              fill="white"
+              stroke="#111827"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+          </svg>
+
+          <div className="rounded-full border border-blue-400/30 bg-blue-600 px-6 py-3 shadow-[0_8px_30px_rgba(37,99,235,0.35)]">
+            <span className="whitespace-nowrap text-sm font-medium tracking-wide text-white">
+              YUSUF ODETOLA
+            </span>
+          </div>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+/* =========================================
+   EXPERTISE DATA
+========================================= */
+
+const expertise = [
+  {
+    icon: Code2,
+    title: "Frontend Development",
+    description: "Modern web applications",
+  },
+  {
+    icon: Palette,
+    title: "UI/UX & Product Design",
+    description: "Intuitive digital experiences",
+  },
+  {
+    icon: Workflow,
+    title: "AI & Workflow Automation",
+    description: "Intelligent business workflows",
+  },
+  {
+    icon: Languages,
+    title: "Arabic Digital Design",
+    description: "Bilingual and RTL experiences",
+  },
+];
+
+/* =========================================
+   TECHNOLOGY DATA
+========================================= */
+
+const technologies = [
+  { name: "Next.js", icon: SiNextdotjs },
+  { name: "React", icon: SiReact },
+  { name: "TypeScript", icon: SiTypescript },
+  { name: "Tailwind CSS", icon: SiTailwindcss },
+  { name: "n8n", icon: SiN8N },
+  { name: "Figma", icon: SiFigma },
+];
+
+/* =========================================
+   MAIN HERO COMPONENT
+========================================= */
+
+export default function Hero() {
+  const { personal, social } = portfolio;
+
+  return (
+    <section
+      id="home"
+      className="relative isolate min-h-screen overflow-hidden bg-[#060D19] px-5 pb-20 pt-32 text-white md:px-8 md:pt-36 lg:px-12"
+    >
+      <CursorNameTag />
+
+      {/* BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(56,189,248,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(56,189,248,0.035)_1px,transparent_1px)] bg-[size:55px_55px]" />
+
+        <div className="absolute -right-40 top-20 h-[600px] w-[600px] rounded-full bg-blue-600/15 blur-[140px]" />
+
+        <div className="absolute -left-40 bottom-0 h-[450px] w-[450px] rounded-full bg-cyan-500/10 blur-[130px]" />
+      </div>
+
+      <div className="mx-auto max-w-[1440px]">
+        <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          {/* LEFT SIDE */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -35 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-[620px] pb-8"
+            className="relative z-10"
           >
-            <p className="mb-5 text-sm font-bold uppercase tracking-[0.28em] text-blue-400">
-              Hello, I&apos;m
-            </p>
-
-            <h1 className="leading-[0.9]">
-              <span className="block text-[68px] font-black tracking-tight text-white md:text-[88px]">
-                {portfolio.personal.firstName}
+            {/* PROFESSIONAL LABEL */}
+            <div className="mb-8 inline-flex items-center gap-3 rounded-full border border-cyan-400/25 bg-cyan-400/[0.06] px-5 py-3">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-50" />
+                <span className="relative h-2.5 w-2.5 rounded-full bg-cyan-400" />
               </span>
-              <span className="block bg-gradient-to-r from-blue-500 via-sky-400 to-cyan-300 bg-clip-text text-[68px] font-black tracking-tight text-transparent md:text-[88px]">
-                {portfolio.personal.lastName}
+
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-300 sm:text-xs">
+                Digital Product Developer
+              </span>
+            </div>
+
+            {/* MAIN PROFESSIONAL HEADLINE */}
+            <h1 className="max-w-3xl text-[clamp(2.9rem,5.2vw,4.7rem)] font-black leading-[1.08] tracking-[-0.045em] text-white">
+              I build digital experiences
+              <span className="mt-2 block bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-300 bg-clip-text text-transparent">
+                that make an impact.
               </span>
             </h1>
 
-            <div className="mt-10 space-y-2 text-[30px] font-semibold leading-tight md:text-[38px]">
-              <p className="text-slate-100">Designing Experiences.</p>
-              <p className="text-blue-500">Building Products.</p>
-              <p className="text-cyan-400">Automating Workflows.</p>
+            {/* INTRODUCTION */}
+            <p className="mt-7 max-w-xl text-base leading-8 text-slate-400 md:text-lg">
+              I am a Frontend Developer and UI/UX Designer passionate about
+              creating responsive digital products, building intelligent
+              automation systems with n8n, and delivering professional Arabic
+              digital design experiences.
+            </p>
+
+            {/* EXPERTISE CARDS */}
+            <div className="mt-9 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-2">
+              {expertise.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.25 + index * 0.1,
+                    }}
+                    className="group flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.035] p-4 transition duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:bg-cyan-400/[0.05]"
+                  >
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10 text-cyan-300 transition group-hover:bg-blue-500/20">
+                      <Icon size={21} />
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-100">
+                        {item.title}
+                      </h3>
+
+                      <p className="mt-1 text-xs text-slate-500">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
-            <p className="mt-8 text-xl text-slate-300">
-              Frontend Developer • AI Automation Expert • UI/UX Designer
-            </p>
+            {/* ACTION BUTTONS */}
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link
+                href="#projects"
+                className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 px-7 py-4 text-sm font-bold text-white shadow-lg shadow-blue-900/30 transition duration-300 hover:-translate-y-1 hover:shadow-blue-500/30"
+              >
+                Explore My Projects
+                <ArrowRight
+                  size={18}
+                  className="transition group-hover:translate-x-1"
+                />
+              </Link>
 
-            <p className="mt-8 max-w-[600px] text-lg leading-9 text-slate-400">
-              {portfolio.personal.about}
-            </p>
+              <Link
+                href="/cv"
+                className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/[0.04] px-8 py-5 font-semibold text-white transition duration-300 hover:border-cyan-400/40 hover:bg-white/[0.08]"
+              >
+                <Download size={20} />
+                View CV
+              </Link>
+            </div>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#projects" className="btn-primary">
-                View Projects
-                <ArrowRight size={18} />
+            {/* SOCIAL LINKS */}
+            <div className="mt-9 flex flex-wrap items-center gap-5 text-sm text-slate-500">
+              <span>Connect with me</span>
+
+              <a
+                href={social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition hover:text-cyan-300"
+              >
+                GitHub <ExternalLink size={12} className="inline" />
               </a>
 
               <a
-                href={portfolio.personal.resume}
-                download
-                className="btn-secondary"
+                href={social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition hover:text-cyan-300"
               >
-                <Download size={18} />
-                Download CV
+                LinkedIn <ExternalLink size={12} className="inline" />
               </a>
-            </div>
-
-            <div className="mt-10 flex flex-wrap gap-3 rounded-[28px] border border-white/10 bg-white/5 px-4 py-4 backdrop-blur-xl">
-              {["Next.js", "Tailwind", "TypeScript", "React", "n8n"].map(
-                (item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-200"
-                  >
-                    {item}
-                  </span>
-                ),
-              )}
             </div>
           </motion.div>
 
-          {/* RIGHT */}
+          {/* RIGHT SIDE: PORTRAIT */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9 }}
-            className="relative flex min-h-[920px] items-end justify-center"
+            initial={{ opacity: 0, scale: 0.94, x: 25 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            className="relative mx-auto w-full max-w-[590px] min-w-0"
           >
-            {/* glow behind image */}
-            <div className="absolute left-1/2 top-[22%] h-[280px] w-[280px] -translate-x-1/2 rounded-full bg-cyan-400/30 blur-[100px]" />
-            <div className="absolute left-1/2 top-[30%] h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[160px]" />
+            <div className="absolute inset-8 rounded-full bg-blue-500/20 blur-[100px]" />
 
-            {/* left floating skill cards */}
-            <div className="absolute left-0 top-20 hidden xl:flex xl:flex-col xl:gap-8">
-              <GlassCard
-                title="React"
-                subtitle="Frontend Development"
-                className="w-[240px]"
-              />
-              <GlassCard
-                title="Figma"
-                subtitle="UI / UX Design"
-                className="w-[240px]"
-              />
-              <GlassCard
-                title="AI Automation"
-                subtitle="Intelligent Workflows"
-                className="w-[240px]"
-              />
-            </div>
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-[#142844] via-[#0D1A2D] to-[#07101E] shadow-[0_30px_100px_rgba(0,0,0,0.45)]">
+              {/* RESPONSIVE CREATIVE TECHNOLOGY BADGE
+              <div className="pointer-events-none absolute left-5 top-5 z-20 sm:left-6 sm:top-6 md:left-7 md:top-7">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#081426]/90 px-3 py-2.5 shadow-lg backdrop-blur-xl">
+                  <Sparkles size={15} className="shrink-0 text-cyan-300" />
 
-            {/* workflow card */}
-            <div className="absolute right-0 top-16 hidden xl:block">
-              <div className="w-[310px] rounded-[30px] border border-cyan-400/20 bg-slate-900/55 p-5 backdrop-blur-xl">
-                <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-cyan-400">
-                  AI Workflow
+                  <span className="whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.10em] text-slate-300">
+                    Creative Technology
+                  </span>
+                </div>
+              </div> */}
+
+              {/* PORTRAIT IMAGE */}
+              <div className="absolute inset-0">
+                <Image
+                  src="/images/yusuf-hero.png"
+                  alt="Portrait of Yusuf Odetola"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  className="object-contain object-bottom"
+                />
+              </div>
+
+              {/* BOTTOM GRADIENT */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#07101E] via-[#07101E]/55 to-transparent" />
+
+              {/* PORTRAIT CAPTION */}
+              <div className="absolute bottom-7 left-7 right-7 z-20">
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300">
+                  Design. Develop. Automate.
                 </p>
 
-                <div className="space-y-4">
-                  <WorkflowItem title="Lead Captured" text="Web Form" />
-                  <WorkflowItem title="AI Agent" text="Process Data" />
-                  <WorkflowItem title="Update CRM" text="Save Lead" />
-                  <WorkflowItem title="Send Email" text="Welcome Lead" />
-                </div>
+                <h3 className="mt-3 text-2xl font-bold tracking-tight text-white md:text-3xl">
+                  Digital Experiences That Matter
+                </h3>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  Building meaningful digital solutions.
+                </p>
               </div>
             </div>
 
-            {/* dashboard */}
-            <div className="absolute bottom-12 right-4 hidden xl:block">
-              <div className="w-[290px] rounded-[30px] border border-white/10 bg-slate-900/55 p-6 backdrop-blur-xl">
-                <p className="text-sm text-slate-400">Tasks Automated</p>
-                <h3 className="mt-2 text-5xl font-bold text-white">2,430</h3>
-                <p className="mt-2 text-green-400">↑ 34% this month</p>
+            {/* FLOATING DEVELOPMENT CARD */}
+            <motion.div
+              animate={{ y: [0, -9, 0] }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -left-8 top-[30%] hidden rounded-2xl border border-blue-400/25 bg-[#0C192B]/95 p-4 shadow-2xl backdrop-blur-xl sm:block"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500/15 text-cyan-300">
+                  <Code2 size={23} />
+                </div>
 
-                <div className="mt-6 flex items-center justify-between">
-                  <div>
-                    <p className="text-2xl font-bold text-cyan-300">84%</p>
-                    <p className="text-sm text-slate-400">Success Rate</p>
-                  </div>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    Modern Development
+                  </p>
 
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full border-[10px] border-cyan-400/30 border-t-blue-500">
-                    <span className="text-lg font-semibold text-white">
-                      84%
-                    </span>
-                  </div>
+                  <p className="text-xs text-slate-500">React · Next.js</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* HERO IMAGE */}
-            <div className="relative z-10 flex h-full w-full items-end justify-center">
-              <Image
-                src={portfolio.personal.avatar}
-                alt={portfolio.personal.fullName}
-                width={1100}
-                height={1400}
-                priority
-                className="h-auto max-h-[920px] w-auto object-contain drop-shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
-              />
+            {/* FLOATING AUTOMATION CARD */}
+            <motion.div
+              animate={{ y: [0, 9, 0] }}
+              transition={{
+                duration: 4.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute -right-5 bottom-[25%] hidden rounded-2xl border border-cyan-400/25 bg-[#0C192B]/95 p-4 shadow-2xl backdrop-blur-xl sm:block"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-400/10 text-cyan-300">
+                  <Workflow size={22} />
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold text-white">AI Automation</p>
+
+                  <p className="text-xs text-slate-500">Powered by n8n</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* TECHNOLOGY STRIP */}
+            <div className="absolute -bottom-7 left-1/2 flex w-max max-w-[95%] -translate-x-1/2 items-center gap-4 rounded-2xl border border-white/10 bg-[#0B1728]/95 px-5 py-4 shadow-2xl backdrop-blur-xl">
+              {technologies.map((tech) => {
+                const Icon = tech.icon;
+
+                return (
+                  <div
+                    key={tech.name}
+                    title={tech.name}
+                    aria-label={tech.name}
+                    className="text-slate-400 transition hover:-translate-y-1 hover:text-cyan-300"
+                  >
+                    <Icon size={21} />
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
         </div>
       </div>
     </section>
-  );
-}
-
-function GlassCard({ title, subtitle, className = "" }) {
-  return (
-    <div
-      className={`rounded-[28px] border border-white/10 bg-slate-900/55 px-6 py-5 backdrop-blur-xl ${className}`}
-    >
-      <p className="text-[20px] font-bold text-white">{title}</p>
-      <p className="mt-2 text-lg text-slate-300">{subtitle}</p>
-    </div>
-  );
-}
-
-function WorkflowItem({ title, text }) {
-  return (
-    <div className="rounded-2xl border border-cyan-400/20 bg-slate-950/45 px-4 py-4">
-      <p className="text-base font-semibold text-white">{title}</p>
-      <p className="mt-1 text-sm text-slate-400">{text}</p>
-    </div>
   );
 }
