@@ -22,7 +22,8 @@ export default function Contact() {
     message: "",
   });
 
-  const whatsappNumber = "2348169587914";
+  // Updated UK WhatsApp number
+  const whatsappNumber = "447448601240";
 
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     "Hello Yusuf, I came across your portfolio and would like to discuss a project or opportunity with you.",
@@ -134,11 +135,12 @@ export default function Contact() {
                 </div>
               </a>
 
-              {/* WhatsApp card */}
+              {/* WhatsApp card - UPDATED */}
               <a
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Chat with Yusuf Odetola on WhatsApp"
                 className="group mt-4 flex items-center gap-4 rounded-2xl border border-white/[0.09] bg-white/[0.045] p-4 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/40 hover:bg-emerald-500/[0.06]"
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400">
@@ -147,7 +149,7 @@ export default function Contact() {
 
                 <div className="min-w-0 flex-1">
                   <h4 className="font-bold text-white">WhatsApp</h4>
-                  <p className="mt-1 text-xs text-slate-400">+44 7575 115575</p>
+                  <p className="mt-1 text-xs text-slate-400">+44 7448 601240</p>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2 rounded-full bg-slate-950/70 py-2 pl-4 pr-2 text-xs font-semibold text-slate-300">

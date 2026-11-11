@@ -183,7 +183,7 @@ export default function About() {
 
                 {/* PHONE */}
                 <a
-                  href={`tel:${personal.phone}`}
+                  href="tel:+447448601240"
                   className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.025] p-4 transition hover:border-cyan-400/25"
                 >
                   <div className="rounded-xl bg-purple-400/10 p-2.5 text-purple-300">
@@ -193,14 +193,14 @@ export default function About() {
                   <div className="min-w-0">
                     <p className="text-xs text-slate-500">Phone</p>
                     <p className="mt-1 text-sm font-semibold text-white">
-                      {personal.phone}
+                      +44 7448 601240
                     </p>
                   </div>
                 </a>
 
                 {/* WHATSAPP */}
                 <a
-                  href="https://wa.me/2348169587914"
+                  href="https://wa.me/447448601240"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Chat with Yusuf Odetola on WhatsApp"
@@ -213,7 +213,7 @@ export default function About() {
                   <div className="min-w-0">
                     <p className="text-xs text-slate-500">WhatsApp</p>
                     <p className="mt-1 text-sm font-semibold text-white">
-                      +44 7575 115575
+                      +44 7448 601240
                     </p>
                   </div>
                 </a>
